@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class PQAI {
   public static void main(String[] args) throws Exception {
     if (args.length != 0) {
@@ -5,9 +7,11 @@ public class PQAI {
       return;
     }
 
-    // Get BufferedImage of PQ Window (or source from file - param? const?)
-    // Return 2d enum of board
-    Board board = VisualParser.getBoard("C:/code/puzzle_quest_ai/test_images/1.png");
+    VisualParser parser = VisualParser.createFromFile(new File("C:/code/puzzle_quest_ai/test_images/1.png"));
+    parser.saveDebugImageToFile(new File("C:/tmp/out.png"));
+    parser.saveTrainingTilesToDirectory(new File("C:/tmp/"));
+    Board board = parser.getBoard();
+    
     System.out.println(board.toString());
   }
 }

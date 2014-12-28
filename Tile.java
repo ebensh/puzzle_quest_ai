@@ -13,8 +13,7 @@ public enum Tile {
   WILD5 ("Wild5"),
   WILD6 ("Wild6"),
   WILD7 ("Wild7"),
-  WILD8 ("Wild8"),
-  WILD9 ("Wild9");
+  WILD8 ("Wild8");
   
   private final String description;
   
