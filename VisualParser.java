@@ -15,7 +15,7 @@ import java.util.*;
 public class VisualParser {
   static int SCREEN_WIDTH = 1024;
   static int SCREEN_HEIGHT = 768;
-  static int BOARD_LEFT = 218;
+  static int BOARD_LEFT = 219;
   static int BOARD_TOP = 131;
   static int TILE_WIDTH = 71;
   static int TILE_HEIGHT = 71;
