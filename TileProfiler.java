@@ -23,46 +23,85 @@ import javax.imageio.ImageIO;
 // Avg: 16, 118, 135
 
 public class TileProfiler {
-  private static class RGB {
-    public int red = 0;
-    public int green = 0;
-    public int blue = 0;
+  public static class RGB {
+    public final int red;
+    public final int green;
+    public final int blue;
     public RGB() { this(0, 0, 0); }
     public RGB(int red, int green, int blue) {
       this.red = red;
       this.green = green;
       this.blue = blue;
     }
+    
+    public double distance(RGB otherRGB) {
+      return Math.sqrt(Math.pow(otherRGB.red - this.red, 2) +
+                        Math.pow(otherRGB.green - this.green, 2) +
+                        Math.pow(otherRGB.blue - this.blue, 2));
+    }
+    
+    @Override
+    public String toString() {
+      return String.format("(%d, %d, %d)", red, green, blue);
+    }
+    
+    // TODO(ebensh): Optimize as a lookup keyed on Tile?
+    public static RGB AIR = new RGB(134, 135, 4);
+    public static RGB COIN = new RGB(207, 136, 72);
+    public static RGB EARTH = new RGB(2, 119, 24);
+    public static RGB FIRE = new RGB(133, 4, 5);
+    public static RGB SKULL = new RGB(140, 108, 85);
+    public static RGB STAR = new RGB(152, 0, 152);
+    public static RGB WATER = new RGB(16, 118, 135);
   }
 
-  private static void avgRGB(BufferedImage img) {
+  private static RGB avgRGB(BufferedImage img) {
     RGB avg = new RGB();
     
     // In a circle of diameter 71 pixels (like our tiles) to omit the corners
     // and only take an inscribed square we start ~10 pixels in and end 10
     // pixels early. This examines only the 50x50 square inscribed in the tile.
     int OFFSET = 16;
+    int red = 0;
+    int green = 0;
+    int blue = 0;
     
     for (int y = OFFSET; y < img.getHeight() - OFFSET; y++) {
       for (int x = OFFSET; x < img.getWidth() - OFFSET; x++) {
         int pixel = img.getRGB(x, y);
-        int red   = pixel >> 16 & 0xff;
-        int green = pixel >>  8 & 0xff;
-        int blue  = pixel       & 0xff;
-        avg.red += red;
-        avg.green += green;
-        avg.blue += blue;
+        red   += pixel >> 16 & 0xff;
+        green += pixel >>  8 & 0xff;
+        blue  += pixel       & 0xff;
       }
     }
     
     int numPixels = (img.getHeight() - 2 * OFFSET) * (img.getWidth() - 2 * OFFSET);
-    avg.red /= numPixels;
-    avg.green /= numPixels;
-    avg.blue /= numPixels;
-    System.out.format("Avg: %d, %d, %d%n", avg.red, avg.green, avg.blue);
-    //return avg;
+    red /= numPixels;
+    green /= numPixels;
+    blue /= numPixels;
+    System.out.format("Avg: %d, %d, %d%n", red, green, blue);
+    return new RGB(red, green, blue);
   }
-
+  
+  public static Tile classifyRGBToTile(RGB rgb) {
+    // Now find the closest profile point, and return that tile.
+    // TODO(ebensh): Replace this with sane code. How does Java not have
+    // tuples, lambdas, first class functions? Am I just missing it?
+    RGB[] profiles = { RGB.AIR, RGB.COIN, RGB.EARTH, RGB.FIRE, RGB.SKULL, RGB.STAR, RGB.WATER };
+    Tile[] tiles = { Tile.AIR, Tile.COIN, Tile.EARTH, Tile.FIRE, Tile.SKULL, Tile.STAR, Tile.WATER };
+    Tile bestTile = Tile.AIR;
+    double bestDist = Double.MAX_VALUE;
+    for (int i = 0; i < profiles.length; i++) {
+      double dist = rgb.distance(profiles[i]);
+      if (dist < bestDist) {
+        bestTile = tiles[i];
+        bestDist = dist;
+      }
+    }
+    
+    return bestTile;
+  }
+  
   public static void main(String args[]) {
     File[] files = {
       new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Air/tile_0.png"),
@@ -77,7 +116,9 @@ public class TileProfiler {
       try {
         BufferedImage img = ImageIO.read(file);
         System.out.println("File: " + file.getPath());
-        avgRGB(img);
+        RGB avg = avgRGB(img);
+        Tile tile = classifyRGBToTile(avg);
+        System.out.println("RGB: " + avg.toString() + " => " + tile.toString());
       } catch (IOException e) {
         System.err.println("Could not read file " + file.getPath() + "; error: " + e.toString());
       }
