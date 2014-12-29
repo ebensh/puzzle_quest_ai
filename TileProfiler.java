@@ -83,7 +83,7 @@ public class TileProfiler {
     return new RGB(red, green, blue);
   }
   
-  public static Tile classifyRGBToTile(RGB rgb) {
+  private static Tile classifyRGBToTile(RGB rgb) {
     // Now find the closest profile point, and return that tile.
     // TODO(ebensh): Replace this with sane code. How does Java not have
     // tuples, lambdas, first class functions? Am I just missing it?
@@ -100,6 +100,10 @@ public class TileProfiler {
     }
     
     return bestTile;
+  }
+  
+  public static Tile classifyImageToTile(BufferedImage img) {
+    return classifyRGBToTile(avgRGB(img));
   }
   
   public static void main(String args[]) {

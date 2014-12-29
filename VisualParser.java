@@ -116,12 +116,16 @@ public class VisualParser {
     writeImageToFile(copy, path);
   }
   
-  public Board getBoard() { 
-    // TODO(ebensh): This method.
+  public Board getBoard() {
     Board board = new Board(8, 8);
+    
+    Object[] rects = getTileRectangles().toArray();
+    BufferedImage rectImg;
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
-        board.setTile(i, j, Tile.WATER);
+        Rectangle rect = (Rectangle)rects[i * 8 + j];
+        rectImg = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
+        board.setTile(i, j, TileProfiler.classifyImageToTile(rectImg));
       }
     }
     return board;
