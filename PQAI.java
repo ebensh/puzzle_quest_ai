@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Scanner;
 
 public class PQAI {
   public static void main(String[] args) throws Exception {
@@ -6,12 +7,15 @@ public class PQAI {
       System.out.println("Zero args please.");
       return;
     }
-
-    VisualParser parser = VisualParser.createFromFile(new File("C:/code/puzzle_quest_ai/test_images/1.png"));
-    parser.saveDebugImageToFile(new File("C:/tmp/out.png"));
-    parser.saveTrainingTilesToDirectory(new File("C:/tmp/"));
-    Board board = parser.getBoard();
     
-    System.out.println(board.toString());
+    Scanner keyboard = new Scanner(System.in);
+    while (true) {
+      System.out.println("Press [Enter] to continue.");
+      keyboard.nextLine();
+      Eyes parser = Eyes.createFromScreen();
+      Board board = parser.getBoard();
+      System.out.println(board.toString());
+      // TODO(ebensh): Make move
+    }
   }
 }

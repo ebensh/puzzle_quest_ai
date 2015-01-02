@@ -12,7 +12,7 @@ import java.awt.Robot;
 import java.awt.AWTException;
 import java.util.*;
 
-public class VisualParser {
+public class Eyes {
   static int SCREEN_WIDTH = 1024;
   static int SCREEN_HEIGHT = 768;
   static int BOARD_LEFT = 219;
@@ -23,21 +23,21 @@ public class VisualParser {
   
   private BufferedImage img;
   
-  public static VisualParser createFromScreen(int x, int y, int width, int height) {
+  public static Eyes createFromScreen(int x, int y, int width, int height) {
     try {
       Robot robot = new Robot();
-      return new VisualParser(robot.createScreenCapture(new Rectangle(x, y, width, height)));
+      return new Eyes(robot.createScreenCapture(new Rectangle(x, y, width, height)));
     } catch (Exception e) {
       System.out.println("Could not read image from screen; exception: " + e.toString());
       return null;
     }
   }
   
-  public static VisualParser createFromScreen() {
-    return createFromScreen(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+  public static Eyes createFromScreen() {
+    return createFromScreen(0, 25, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
-  public static VisualParser createFromFile(File path) {
+  public static Eyes createFromFile(File path) {
     BufferedImage img = null;
     try {
       img = ImageIO.read(path);
@@ -45,10 +45,10 @@ public class VisualParser {
       System.err.println("Couldn't read image from path " + path + ", " +
           "error: " + e.toString());
     }
-    return new VisualParser(img);
+    return new Eyes(img);
   }
   
-  private VisualParser(BufferedImage img) { this.img = img; }
+  private Eyes(BufferedImage img) { this.img = img; }
 
   private static Collection<Rectangle> getTileRectangles() {
     ArrayList<Rectangle> rects = new ArrayList<Rectangle>(64);

@@ -79,7 +79,7 @@ public class TileProfiler {
     red /= numPixels;
     green /= numPixels;
     blue /= numPixels;
-    System.out.format("Avg: %d, %d, %d%n", red, green, blue);
+    //System.out.format("Avg: %d, %d, %d%n", red, green, blue);
     return new RGB(red, green, blue);
   }
   
