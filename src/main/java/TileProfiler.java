@@ -7,20 +7,24 @@ import javax.imageio.ImageIO;
 
 // Example:
 // For OFFSET 16, we have profiles:
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Air\tile_0.png
-// Avg: 134, 135, 4
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Coin\tile_2.png
-// Avg: 207, 136, 72
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Earth\tile_1.png
-// Avg: 2, 119, 24
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Fire\tile_4.png
-// Avg: 133, 4, 5
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Skull\tile_7.png
-// Avg: 140, 108, 85
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Star\tile_15.png
-// Avg: 152, 0, 152
-// File: C:\code\puzzle_quest_ai\learning\tile_dataset\Water\tile_5.png
-// Avg: 16, 118, 135
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Air\tile_0.png
+// RGB: (134, 135, 4) => Air
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Coin\tile_2.png
+// RGB: (207, 136, 72) => Coin
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Earth\tile_1.png
+// RGB: (2, 119, 24) => Earth
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Fire\tile_4.png
+// RGB: (133, 4, 5) => Fire
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Skull\tile_7.png
+// RGB: (140, 108, 85) => Skull
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Star\tile_15.png
+// RGB: (152, 0, 152) => Star
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Water\tile_5.png
+// RGB: (16, 118, 135) => Water
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Wild2\tile_44.png
+// RGB: (89, 51, 26) => Wild2
+// File: C:\code\puzzle_quest_ai\src\main\resources\learning\tile_dataset\Skull5\tile_14.png
+// RGB: (86, 67, 54) => Skull5
 
 public class TileProfiler {
 	public static class RGB {
@@ -53,6 +57,8 @@ public class TileProfiler {
 		public static RGB SKULL = new RGB(140, 108, 85);
 		public static RGB STAR = new RGB(152, 0, 152);
 		public static RGB WATER = new RGB(16, 118, 135);
+		public static RGB WILD2 = new RGB(89, 51, 26);
+		public static RGB SKULL5 = new RGB(86, 67, 54);
 	}
 
 	private static RGB avgRGB(BufferedImage img) {
@@ -85,8 +91,8 @@ public class TileProfiler {
 		// Now find the closest profile point, and return that tile.
 		// TODO(ebensh): Replace this with sane code. How does Java not have
 		// tuples, lambdas, first class functions? Am I just missing it?
-		RGB[] profiles = { RGB.AIR, RGB.COIN, RGB.EARTH, RGB.FIRE, RGB.SKULL, RGB.STAR, RGB.WATER };
-		Tile[] tiles = { Tile.AIR, Tile.COIN, Tile.EARTH, Tile.FIRE, Tile.SKULL, Tile.STAR, Tile.WATER };
+		RGB[] profiles = { RGB.AIR, RGB.COIN, RGB.EARTH, RGB.FIRE, RGB.SKULL, RGB.SKULL5, RGB.STAR, RGB.WATER, RGB.WILD2 };
+		Tile[] tiles = { Tile.AIR, Tile.COIN, Tile.EARTH, Tile.FIRE, Tile.SKULL, Tile.SKULL5, Tile.STAR, Tile.WATER, Tile.WILD2 };
 		Tile bestTile = Tile.AIR;
 		double bestDist = Double.MAX_VALUE;
 		for (int i = 0; i < profiles.length; i++) {
@@ -106,13 +112,15 @@ public class TileProfiler {
 
 	public static void main(String args[]) {
 		File[] files = {
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Air/tile_0.png"),
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Coin/tile_2.png"),
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Earth/tile_1.png"),
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Fire/tile_4.png"),
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Skull/tile_7.png"),
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Star/tile_15.png"),
-				new File("C:/code/puzzle_quest_ai/learning/tile_dataset/Water/tile_5.png")
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Air/tile_0.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Coin/tile_2.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Earth/tile_1.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Fire/tile_4.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Skull/tile_7.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Star/tile_15.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Water/tile_5.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Wild2/tile_44.png"),
+				new File("C:/code/puzzle_quest_ai/src/main/resources/learning/tile_dataset/Skull5/tile_14.png")
 		};
 		for (File file : files) {
 			try {

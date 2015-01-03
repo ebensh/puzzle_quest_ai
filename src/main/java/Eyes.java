@@ -5,7 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.util.*;
@@ -13,7 +15,7 @@ import java.util.*;
 public class Eyes {
 	static int SCREEN_WIDTH = 1024;
 	static int SCREEN_HEIGHT = 768;
-	static int BOARD_LEFT = 219;
+	static int BOARD_LEFT = 221;
 	static int BOARD_TOP = 131;
 	static int TILE_WIDTH = 71;
 	static int TILE_HEIGHT = 71;
@@ -123,9 +125,14 @@ public class Eyes {
 			for (int j = 0; j < 8; j++) {
 				Rectangle rect = (Rectangle)rects[i * 8 + j];
 				rectImg = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
-				board.setTile(i, j, TileProfiler.classifyImageToTile(rectImg));
+				board.set(i, j, TileProfiler.classifyImageToTile(rectImg));
 			}
 		}
 		return board;
+	}
+	
+	public static void main(String[] args) {
+		Eyes parser = Eyes.createFromScreen();
+		parser.saveTrainingTilesToDirectory(new File("c:/tmp"));
 	}
 }

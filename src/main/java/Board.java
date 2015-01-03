@@ -16,7 +16,33 @@ public class Board {
 		}
 	}
 
-	public void setTile(int row, int column, Tile tile) {
+	public void swap(int row1, int col1, int row2, int col2) {
+		Tile temp = this.tiles[row1][col1];
+		this.tiles[row1][col1] = this.tiles[row2][col2];
+		this.tiles[row2][col2] = temp;
+	}
+	public void swap(GameLogic.Swap s) {
+		swap(s.src.getLeft(), s.src.getRight(), s.dest.getLeft(), s.dest.getRight());
+	}
+	
+	public void drop() {
+		for (int c = 0; c < columns(); c++) {
+			int rowForTile = rows() - 1;
+			for (int r = rows() - 1; r >= 0; r--) {
+				Tile type = this.tiles[r][c]; 
+				if (type == Tile.EMPTY) {
+					continue;
+				} else if (r == rowForTile) {
+					rowForTile--;
+				} else {
+					swap(r, c, rowForTile, c);
+					rowForTile--;
+				}
+			}
+		}
+	}
+	
+	public void set(int row, int column, Tile tile) {
 		if (row < 0 || row >= rows()) {
 			throw new ArrayIndexOutOfBoundsException(row);
 		}
@@ -26,7 +52,7 @@ public class Board {
 		this.tiles[row][column] = tile;
 	}
 
-	public Tile getTile(int row, int column) {
+	public Tile get(int row, int column) {
 		if (row < 0 || row >= rows()) {
 			throw new ArrayIndexOutOfBoundsException(row);
 		}
